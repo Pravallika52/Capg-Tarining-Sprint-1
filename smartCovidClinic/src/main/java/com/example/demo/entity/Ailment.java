@@ -12,14 +12,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Patient {
+public class Ailment {
 
 	@Id
 	@GeneratedValue
-	private int patientId;
-	private String patientName;
-	private String patientEmail;
-	private double contact;
-	private String password;
-	
+	private int ailmentId;
+	private String ailment;
 }
