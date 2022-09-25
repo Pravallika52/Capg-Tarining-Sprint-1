@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,13 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Admin {
+@Table(name="specialization")
+public class Specialization {
 	
 	@Id
 	@GeneratedValue
-	private int adminId;
-	private String adminName;
-	private String adminEmail;
-	private String adminPassword;
+	private int specId;
+	private String specName;
 
 }
