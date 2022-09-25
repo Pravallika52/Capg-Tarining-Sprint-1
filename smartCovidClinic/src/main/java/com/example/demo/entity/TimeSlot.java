@@ -1,14 +1,23 @@
 package com.example.demo.entity;
 
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import lombok.Data;
+
+@Data
 @Entity
 public class TimeSlot {
 	
 	@Id
-	@GeneratedValue
-	private int timeSlotId;
+	private int slotId;
+	
+	private int slot;
+	
+	private LocalDate date;
+	
+	
 
 }
