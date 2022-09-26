@@ -7,6 +7,8 @@ import com.example.demo.entity.Appointment;
 
 public interface IAppointmentService {
 	
-	List<Appointment> viewAppointment(int appointId);
+	Appointment addAppoint(Appointment appoint);
+	List<Appointment> getAllAppoint();
+	Appointment viewAppoint(int appointId);
 
 }
