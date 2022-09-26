@@ -6,10 +6,11 @@ import com.example.demo.entity.Doctor;
 import com.example.demo.exception.DoctorNotFoundException;
 
 public interface IDoctorService {
-	//get all doctors
+	
 	List<Doctor> getAllDoctors();
 	Doctor getDocById(int docId) throws DoctorNotFoundException;
 	Doctor addDoctor(Doctor doc);
 	Doctor updateDoctorById(int docId,Doctor doc) throws DoctorNotFoundException;
-	Doctor deleteDoctor(int docId);
+	Doctor deleteDoctor(int docId) throws DoctorNotFoundException;
+
 }

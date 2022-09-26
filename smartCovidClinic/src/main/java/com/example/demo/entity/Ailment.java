@@ -13,9 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 public class Ailment {
-
+	
 	@Id
 	@GeneratedValue
 	private int ailmentId;
 	private String ailment;
+
 }

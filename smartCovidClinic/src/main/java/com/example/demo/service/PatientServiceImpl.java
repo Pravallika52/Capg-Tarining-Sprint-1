@@ -29,7 +29,8 @@ public class PatientServiceImpl implements IPatientService {
 		Optional<Patient> pntOpt = pntRepo.findById(pId);
 		if (pntOpt.isPresent()) {
 			Patient pnt = pntOpt.get();
-		    return pntRepo.save(patient);
+		    pntRepo.save(patient);
+		    return pnt;
 		} else {
 			throw new PatientNotFoundException("Employee not found with given id: " + pId);
 		}

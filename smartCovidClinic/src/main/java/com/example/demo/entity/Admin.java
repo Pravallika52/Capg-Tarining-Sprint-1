@@ -8,11 +8,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Admin {
+	
 	
 	@Id
 	@GeneratedValue
@@ -20,5 +22,6 @@ public class Admin {
 	private String adminName;
 	private String adminEmail;
 	private String adminPassword;
+	private String adminConfirmPassword;
 
 }

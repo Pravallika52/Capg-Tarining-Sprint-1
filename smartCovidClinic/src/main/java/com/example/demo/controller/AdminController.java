@@ -16,16 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AdminDto;
 import com.example.demo.entity.Admin;
+import com.example.demo.entity.Doctor;
+import com.example.demo.entity.Patient;
 import com.example.demo.exception.AdminExistsException;
 import com.example.demo.exception.AdminNotFoundException;
+import com.example.demo.exception.DoctorNotFoundException;
 import com.example.demo.exception.PasswordNotSameException;
 import com.example.demo.service.IAdminService;
+import com.example.demo.service.IDoctorService;
+import com.example.demo.service.IPatientService;
 
 @RestController
 public class AdminController {
 	
 	@Autowired
 	IAdminService adminServ;
+	
+	@Autowired
+	IPatientService patientServ;
+	
+	@Autowired
+	IDoctorService docServ;
 	
 	
 	//Adding new Administrator to the Database
@@ -77,5 +88,41 @@ public class AdminController {
 		return new ResponseEntity<>(admin,HttpStatus.OK);
 	}
 
+	@GetMapping("admin/getAllDoctors")
+	ResponseEntity<List<Doctor>> getAllDoctors(){
+		List<Doctor> doctors = docServ.getAllDoctors();
+		return new ResponseEntity<>(doctors, HttpStatus.OK);
+	}
+	
+	@GetMapping("admin/getDoctorById/{docId}")
+	ResponseEntity<Doctor> getDocById(@PathVariable("docId") int docId) throws DoctorNotFoundException{
+		Doctor doctor=docServ.getDocById(docId);
+		return new ResponseEntity<>(doctor, HttpStatus.OK);
+		
+	}
+	
+	@PostMapping("admin/addDoctor")
+	ResponseEntity<Doctor> addDoctor(Doctor doc) {
+		Doctor doctor = docServ.addDoctor(doc);
+		return new ResponseEntity<>(doctor, HttpStatus.OK);
+	}
+	
+	@PutMapping("admin/updateDoctor")
+	ResponseEntity<Doctor> updateDoctorById(int docId,Doctor doc) throws DoctorNotFoundException{
+		Doctor doctor= docServ.updateDoctorById(docId, doc);
+		return new ResponseEntity<>(doctor, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("admin/deleteDoctor")
+	ResponseEntity<Doctor> deleteDoctor(int docId) throws DoctorNotFoundException{
+		Doctor doctor = docServ.deleteDoctor(docId);
+		return new ResponseEntity<>(doctor, HttpStatus.OK);
+	}
+	
+	@GetMapping("/admin/getAllPatients")
+	ResponseEntity<List<Patient>> getAllPatients() {
+	List<Patient> patients= patientServ.getAllPatients();
+	return new ResponseEntity<>(patients, HttpStatus.OK);
+	}
 
 }

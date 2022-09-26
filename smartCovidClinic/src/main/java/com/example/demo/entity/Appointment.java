@@ -10,17 +10,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Appointment {
 	
 	@Id
 	@GeneratedValue
-	private int appId;
-	private Date appDate;
-	private String appTime;
-	//private List<Doctor> appDoc;
-
+	private int appointmentId;
+	private Date appointmnetDate;
+	private String appointmnetTime;
 }
