@@ -1,5 +1,7 @@
 package com.example.demo.service;
 
+
+
 import java.util.List;
 import java.util.Optional;
 
@@ -27,7 +29,8 @@ public class PatientServiceImpl implements IPatientService {
 		Optional<Patient> pntOpt = pntRepo.findById(pId);
 		if (pntOpt.isPresent()) {
 			Patient pnt = pntOpt.get();
-		    return pntRepo.save(patient);
+		    pntRepo.save(patient);
+		    return pnt;
 		} else {
 			throw new PatientNotFoundException("Employee not found with given id: " + pId);
 		}
@@ -65,5 +68,5 @@ public class PatientServiceImpl implements IPatientService {
 		List<Patient> pnt = pntRepo.findAll();
 		return pnt;
 	}
-
+	
 }

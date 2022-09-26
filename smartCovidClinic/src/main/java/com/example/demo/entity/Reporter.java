@@ -16,10 +16,10 @@ public class Reporter {
 	
 	@Id
 	@GeneratedValue
-	private int repoId;
-	
-	private String repoName;
-	private String email;
-	private String phNo;
+	private int reporterId;
+
+	private String reporterName;
+	private String reporterEmail;
+	private String reporterContact;
 
 }

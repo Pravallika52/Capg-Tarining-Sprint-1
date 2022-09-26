@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Ailment;
-import com.example.demo.entity.Patient;
 import com.example.demo.exception.AilmentNotFoundException;
-import com.example.demo.exception.PatientNotFoundException;
 import com.example.demo.service.IAilmentService;
 
 @RestController

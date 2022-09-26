@@ -27,7 +27,8 @@ public class SpecializationServiceImpl implements ISpecializationService {
 		Optional<Specialization> specOpt=specRepo.findById(specId);
 		if (specOpt.isPresent()) {
 			Specialization newspec = specOpt.get();
-		    return specRepo.save(spec);
+			specRepo.save(spec);
+			return newspec;
 		} else {
 			throw new SpecNotFoundException("Specialization not found with given id: " + specId);
 		}

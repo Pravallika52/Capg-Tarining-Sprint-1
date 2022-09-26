@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.LoginDto;
-import com.example.demo.dto.LoginRespDto;
+import com.example.demo.dto.LoginResponseDto;
 import com.example.demo.exception.EmailNotFoundException;
+import com.example.demo.exception.InvalidCredentialsException;
 import com.example.demo.service.ILoginService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -22,13 +23,13 @@ public class LoginController {
 	@Autowired
 	ILoginService loginServ;
 	@PostMapping("/login/dto")
-	ResponseEntity<LoginRespDto> login(@RequestBody LoginDto loginDto){
-		LoginRespDto login= loginServ.login(loginDto);
+	ResponseEntity<LoginResponseDto> login(@RequestBody LoginDto loginDto) throws InvalidCredentialsException{
+		LoginResponseDto login= loginServ.login(loginDto);
 		return new ResponseEntity<>(login, HttpStatus.OK);
 	}
 	@PatchMapping("/logout/{email}")
-	ResponseEntity<LoginRespDto> logout(@PathVariable String email) throws EmailNotFoundException {
-		LoginRespDto resp = loginServ.logout(email);
+	ResponseEntity<LoginResponseDto> logout(@PathVariable String email) throws EmailNotFoundException {
+		LoginResponseDto resp = loginServ.logout(email);
 		return new ResponseEntity<>(resp, HttpStatus.OK);
 	}
 	

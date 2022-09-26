@@ -55,5 +55,4 @@ public class AilmentServiceImpl implements IAilmentService{
 	}
 
 
-
 }
