@@ -11,7 +11,10 @@ import com.example.demo.entity.Specialization;
 @Repository
 public interface ISpecializationRepository extends JpaRepository<Specialization, Integer> {
 
-	Optional<Specialization> findByName(String specName);
+	
+	//@Query(value="SELECT * from specialization a WHERE a.spec_name= :specName",nativeQuery=true)
+	Optional<Specialization> findSpecBySpecName(String specName);
+
 
 	
 	

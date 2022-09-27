@@ -68,5 +68,13 @@ public class SpecializationController {
 		logger.info("Received all specializations from service");
     	return new ResponseEntity<>(specs, HttpStatus.OK);
     }
+	
+	@GetMapping("/spec/getById/{specId}")
+	ResponseEntity<Specialization> getSpec(@PathVariable("specId")int specId)throws SpecNotFoundException{
+		logger.info("Sending request to get specialization by id");
+		Specialization spec = specService.getSpec(specId);
+		logger.info("Received specialization by id successfully");
+		return new ResponseEntity<>(spec, HttpStatus.OK);
+	}
 
 }

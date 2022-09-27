@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.example.demo.entity.Specialization;
 import com.example.demo.exception.SpecExistsException;
+import com.example.demo.exception.SpecNotFoundException;
 
 @SpringBootTest
 class SpecializationServiceTest {
@@ -46,5 +47,20 @@ class SpecializationServiceTest {
 		Specialization newSpec= specService.addSpec(spec);
 		assertEquals("Pulmonologist", newSpec.getSpecName());
 	}
+	
+	@Test
+	void deleteSpecByIdTest() throws SpecNotFoundException {
+		Specialization spec = specService.deleteSpecById(15);
+		assertEquals("Neurologist", spec.getSpecName());
+	}
+	
+	@Test
+	void updateSpecTest() throws SpecNotFoundException {
+		Specialization spec = new Specialization();
+		spec.setSpecName("Cardialogist");
+		Specialization updatedSpec =specService.updateSpec(8, spec);
+		assertEquals("Cardialogist", updatedSpec.getSpecName());
+	}
+	
 
 }

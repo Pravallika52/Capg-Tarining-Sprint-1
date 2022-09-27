@@ -14,6 +14,7 @@ public interface ISpecializationService {
 	Specialization updateSpec(int specId,Specialization spec) throws SpecNotFoundException;
 	Specialization deleteSpecById(int specId)throws SpecNotFoundException;
 	List<Specialization> getAllSpec(); 
+	Specialization getSpec(int specId)throws SpecNotFoundException;
 	Specialization updateSpecDto(SpecInputDto spec);
 	List<SpecOutputDto> getAllSpecDto();
 
