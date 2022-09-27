@@ -7,4 +7,7 @@ public interface IReporterService {
 	
 	Reporter addReporter(Reporter rep);
 	Reporter checkDocAvailability(Doctor doc);
+	
+	
+
 }

@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,32 +26,44 @@ public class TimeSlotController {
 	@Autowired
 	ITimeSlotService timeService;
 	
+	private static Logger logger = LogManager.getLogger();
+	
 	@PostMapping("/slot/add")
 	ResponseEntity<TimeSlot> addSlot(TimeSlot slot) {
+		logger.info("Sending request to add a new TimeSlot");
 		TimeSlot newslot = timeService.addSlot(slot);
+		logger.info("Added new TimeSlot to the Database");
 		return new ResponseEntity<>(newslot, HttpStatus.CREATED);
 	}
 	
 	@PutMapping("/slot/update/{slotId}")
 	ResponseEntity<TimeSlot> updateSlot(@PathVariable("slotId")int slotId,@RequestBody TimeSlot slot)throws SlotNotFoundException {
+		logger.info("Sending request to add a new TimeSlot");
 		TimeSlot updatedSlot = timeService.updateSlot(slotId, slot);
+		logger.info("Updated the TimeSlot in the Database");
 		return new ResponseEntity<>(updatedSlot, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/slot/delete/{slotId}")
 	ResponseEntity<TimeSlot> deleteSlotById(@PathVariable("slotId")int slotId)throws SlotNotFoundException  {
+		logger.info("Sending request to add a new Timeslot");
 		TimeSlot deleteSlot = timeService.deleteSlotById(slotId);
+		logger.info("Removed a TimeSlot from the Database");
 		return new ResponseEntity<>(deleteSlot, HttpStatus.OK);
 	}
 	
 	@GetMapping("/slot/getall/")
 	ResponseEntity<List<TimeSlot>> getAllSlot(){
+		logger.info("Sending request to add a new Timeslot");
 		List<TimeSlot> allslot = timeService.getAllSlot();
+		logger.info("All the TimeSlot in the Database are presented");
 		return new ResponseEntity<>(allslot, HttpStatus.OK);
 }
 	@GetMapping("/slot/get/{slotId}")
 	ResponseEntity<TimeSlot> getSlotById(@PathVariable("slotId")int slotId)throws SlotNotFoundException  {
+		logger.info("Sending request to add a new Timeslot");
 		TimeSlot deleteSlot = timeService.deleteSlotById(slotId);
+		logger.info("Presented the TimeSlot with the given ID");
 		return new ResponseEntity<>(deleteSlot, HttpStatus.OK);
 	}
 	

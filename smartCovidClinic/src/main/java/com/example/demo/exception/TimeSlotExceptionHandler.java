@@ -22,5 +22,6 @@ public class TimeSlotExceptionHandler {
 		
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);  //404 Not found
 	}
+	
 
 }
