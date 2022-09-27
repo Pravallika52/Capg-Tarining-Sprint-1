@@ -22,5 +22,17 @@ public class SpecExceptionHandler {
 		
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);  //404 Not found
 	}
+	
+	@ExceptionHandler(SpecExistsException.class)
+	public ResponseEntity<ErrorResponse> handleException(SpecExistsException exception){
+		
+		ErrorResponse error = new ErrorResponse();
+		
+		error.setStatus(HttpStatus.FOUND.value());
+		error.setMessage(exception.getMessage()); 
+		error.setTimeStamp(LocalDateTime.now()); 
+		
+		return new ResponseEntity<>(error, HttpStatus.FOUND); 
+	}
 
 }
