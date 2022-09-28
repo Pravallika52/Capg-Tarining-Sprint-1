@@ -7,7 +7,6 @@ import com.example.demo.exception.InvalidCredentialsException;
 
 public interface ILoginService {
 	
-
 	LoginResponseDto login(LoginDto logindto) throws InvalidCredentialsException;
 	LoginResponseDto logout(String email) throws EmailNotFoundException;
 
