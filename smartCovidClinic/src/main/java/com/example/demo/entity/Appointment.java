@@ -1,11 +1,13 @@
 package com.example.demo.entity;
 
-
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -15,21 +17,21 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Appointment {
 	
 	@Id
 	@GeneratedValue
-	private int appId;
+	private int appointmentId;
 	
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	private LocalDate appDate;
-	private String appTime;
-	//private Doctor appDoc;
-	//private Patient appPatient;
-
+	private LocalDate appointmentDate;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id")
+	private TimeSlot timeSlot;
 }

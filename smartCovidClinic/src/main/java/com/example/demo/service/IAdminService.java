@@ -10,13 +10,13 @@ import com.example.demo.exception.PasswordNotSameException;
 
 public interface IAdminService {
 	
-	Admin addAdmin(Admin admin) throws AdminExistsException, PasswordNotSameException;
+	AdminDto addAdmin(Admin admin) throws AdminExistsException, PasswordNotSameException;
 	Admin removeAdminById(int adminId) throws AdminNotFoundException;
 	Admin updateAdmin(int adminId, Admin admin) throws AdminNotFoundException;
 	List<Admin> getAllAdmin();
 	List<AdminDto> getAllAdminDto();
 	Admin findAdminById(int adminId) throws AdminNotFoundException;
-	Admin findAdminByEmail(String adminEmail) throws AdminNotFoundException;
+//	Admin findAdminByEmail(String adminEmail) throws AdminNotFoundException;
 	Admin findAdminByName(String adminName) throws AdminNotFoundException;
 
 }

@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.AilmentOutputDto;
 import com.example.demo.entity.Ailment;
+import com.example.demo.exception.AilmentExistsException;
 import com.example.demo.exception.AilmentNotFoundException;
 import com.example.demo.service.IAilmentService;
 
@@ -24,7 +26,7 @@ public class AilmentController {
 	IAilmentService ailService;
 	
 	@PostMapping("/ailment/add")
-	ResponseEntity<Ailment> newAilment(@RequestBody Ailment ailment){
+	ResponseEntity<Ailment> newAilment(@RequestBody Ailment ailment)  throws AilmentExistsException {
 	Ailment newAil = ailService.addAilment(ailment);
 	return new ResponseEntity<>(newAil, HttpStatus.CREATED);
 	}
@@ -43,6 +45,12 @@ public class AilmentController {
 	@GetMapping("/ailment/getAll")
 	ResponseEntity<List<Ailment>> getAllPatients() {
 	List<Ailment> ailments= ailService.getAllAilments();
+	return new ResponseEntity<>(ailments, HttpStatus.OK);
+	}
+	
+	@GetMapping("/ailment/getAllDto")
+	ResponseEntity<List<AilmentOutputDto>> getAllAilmentsDto() {
+		List<AilmentOutputDto> ailments= ailService.getAllAilmentsDto();
 	return new ResponseEntity<>(ailments, HttpStatus.OK);
 	}
 }

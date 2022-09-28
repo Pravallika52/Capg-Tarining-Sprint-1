@@ -3,25 +3,20 @@ package com.example.demo.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name="specialization")
 public class Specialization {
 	
 	@Id
 	@GeneratedValue
-	private int specId;
-	@NotEmpty(message = "Please enter specialization name")
+	private int specilizationId;
 	private String specName;
-	//private List<Doctors> doctors;
 
 }

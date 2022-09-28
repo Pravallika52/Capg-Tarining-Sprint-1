@@ -19,7 +19,7 @@ public class LoginServiceImpl implements ILoginService {
 	
 	@Override
 	public LoginResponseDto login(LoginDto loginDto) throws InvalidCredentialsException {
-		Optional<Login> dbLoginOpt = loginRepo.findLoginByEmail(loginDto.getLoginEmail());
+		Optional<Login> dbLoginOpt = loginRepo.findByLoginEmail(loginDto.getLoginEmail());
 		if (dbLoginOpt.isPresent()) {
 			// compare db password with user provided password
 			// if password matching return credentials else throw exception
@@ -43,9 +43,10 @@ public class LoginServiceImpl implements ILoginService {
 				
 			}
 		}
+	
 		@Override
 		public LoginResponseDto logout(String email) throws EmailNotFoundException {
-			Optional<Login> dbLoginOpt = loginRepo.findLoginByEmail(email);
+			Optional<Login> dbLoginOpt = loginRepo.findByLoginEmail(email);
 			if(dbLoginOpt.isPresent()) {
 				// update isLoggedIn flag as false and save
 				Login login = dbLoginOpt.get();

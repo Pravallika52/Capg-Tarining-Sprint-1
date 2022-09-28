@@ -16,14 +16,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.AdminDto;
+import com.example.demo.dto.PatientOutputDto;
 import com.example.demo.entity.Admin;
+import com.example.demo.entity.Appointment;
 import com.example.demo.entity.Doctor;
-import com.example.demo.entity.Patient;
 import com.example.demo.exception.AdminExistsException;
 import com.example.demo.exception.AdminNotFoundException;
+import com.example.demo.exception.AppointmentNotFoundException;
 import com.example.demo.exception.DoctorNotFoundException;
 import com.example.demo.exception.PasswordNotSameException;
 import com.example.demo.service.IAdminService;
+import com.example.demo.service.IAppointmentService;
 import com.example.demo.service.IDoctorService;
 import com.example.demo.service.IPatientService;
 
@@ -39,14 +42,17 @@ public class AdminController {
 	@Autowired
 	IDoctorService docServ;
 	
+	@Autowired
+	IAppointmentService appointServ;
+	
 	private static Logger logger = LogManager.getLogger();
 	
 	
 	//Adding new Administrator to the Database
 	@PostMapping("/admin/add")
-	ResponseEntity<Admin> addAdmin(@RequestBody Admin admin) throws AdminExistsException, PasswordNotSameException {
+	ResponseEntity<AdminDto> addAdmin(@RequestBody Admin admin) throws AdminExistsException, PasswordNotSameException {
 		logger.info("Sending request to add a new Administrator");
-		Admin newAdmin=adminServ.addAdmin(admin);
+		AdminDto newAdmin=adminServ.addAdmin(admin);
 		logger.info("Added new Administrator to the Database");
 		return new ResponseEntity<>(newAdmin, HttpStatus.CREATED);
 		
@@ -95,13 +101,13 @@ public class AdminController {
 		return new ResponseEntity<>(admin,HttpStatus.OK);
 	}
 	
-	@GetMapping("/admin/findByEmail/{adminEmail}")
-	ResponseEntity<Admin> getAdminByEmail(@PathVariable("adminEmail") String adminEmail) throws AdminNotFoundException{
-		logger.info("Sending request to get Administrator by Email");
-		Admin admin=adminServ.findAdminByEmail(adminEmail);
-		logger.info("Presented the Administrator with the given Email");
-		return new ResponseEntity<>(admin,HttpStatus.OK);
-	}
+//	@GetMapping("/admin/findByEmail/{adminEmail}")
+//	ResponseEntity<Admin> getAdminByEmail(@PathVariable("adminEmail") String adminEmail) throws AdminNotFoundException{
+//		logger.info("Sending request to get Administrator by Email");
+//		Admin admin=adminServ.findAdminByEmail(adminEmail);
+//		logger.info("Presented the Administrator with the given Email");
+//		return new ResponseEntity<>(admin,HttpStatus.OK);
+//	}
 
 	@GetMapping("admin/getAllDoctors")
 	ResponseEntity<List<Doctor>> getAllDoctors(){
@@ -145,11 +151,20 @@ public class AdminController {
 	}
 	
 	@GetMapping("/admin/getAllPatients")
-	ResponseEntity<List<Patient>> getAllPatients() {
+	ResponseEntity<List<PatientOutputDto>> getAllPatients() {
 		logger.info("Sending request to get List of all Patients");
-		List<Patient> patients= patientServ.getAllPatients();
+		List<PatientOutputDto> patients= patientServ.getAllPatients();
 		logger.info("All the Patients in the Database are presented");
 		return new ResponseEntity<>(patients, HttpStatus.OK);
 	}
+	
+	@PutMapping("/admin/updateAppointment")
+	ResponseEntity<Appointment> updateAppointment(@PathVariable("appointId") int appointId,@RequestBody Appointment appoint) throws AppointmentNotFoundException{
+		logger.info("Sending request to update a Doctor");
+		Appointment appoint1= appointServ.updateAppointment(appointId, appoint);
+		logger.info("Updated the Doctor in the Database");
+		return new ResponseEntity<>(appoint1, HttpStatus.OK);
+	}
+	
 
 }

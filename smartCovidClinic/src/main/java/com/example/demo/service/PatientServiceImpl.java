@@ -87,6 +87,8 @@ public class PatientServiceImpl implements IPatientService {
 		for(Patient p:pnt) {
 			PatientOutputDto pntDto = new PatientOutputDto();
 			  pntDto.setPatientName(p.getPatientName());
+			  
+			  // add dto obj into the dto List.
 			  pntDtoList.add(pntDto);
 		}
 		logger.info("Viewed successfully");

@@ -8,13 +8,13 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.TimeSlot;
 import com.example.demo.exception.SlotNotFoundException;
-import com.example.demo.repository.ITimeslotRepository;
+import com.example.demo.repository.ITimeSlotRepository;
 
 @Service
 public class TimeSlotServiceImpl implements ITimeSlotService {
 	
 	@Autowired
-	ITimeslotRepository timeRepo;
+	ITimeSlotRepository timeRepo;
 
 	@Override
 	public TimeSlot addSlot(TimeSlot slot) {

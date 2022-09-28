@@ -1,11 +1,13 @@
 package com.example.demo.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.DoctorDto;
 import com.example.demo.entity.Doctor;
 import com.example.demo.exception.DoctorNotFoundException;
 import com.example.demo.repository.IDoctorRepository;
@@ -67,6 +69,30 @@ public class DoctorServiceImpl implements IDoctorService{
 		}
 		else {
 			throw new DoctorNotFoundException("Doctor not Found with the given ID: "+docId);
+		}
+	}
+
+	@Override
+	public List<DoctorDto> getAllDoctorDto() {
+		// TODO Auto-generated method stub
+		List<Doctor> doctors=docRepo.findAll();
+		List<DoctorDto> doctorDtoList=new ArrayList<>();
+		for(Doctor doctor:doctors) {
+			DoctorDto doctorDto=new DoctorDto();
+			doctorDto.setDocName(doctor.getDoctorName());
+			doctorDtoList.add(doctorDto);
+		}
+		return doctorDtoList;
+	}
+	
+	@Override
+	public Doctor getDocByName(String name) throws DoctorNotFoundException {
+		// TODO Auto-generated method stub
+		Optional<Doctor> viewDoc = docRepo.findBydoctorName(name);
+		if(viewDoc.isPresent()) {
+			return viewDoc.get();
+		} else {
+			throw new DoctorNotFoundException("Doctor not found with the given Name: "+name);
 		}
 	}
 

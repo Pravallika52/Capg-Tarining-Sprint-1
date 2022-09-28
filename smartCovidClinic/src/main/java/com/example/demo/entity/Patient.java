@@ -1,8 +1,11 @@
 package com.example.demo.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
@@ -23,12 +26,10 @@ public class Patient {
 	private int patientId;
 	@NotEmpty(message ="Name may be Empty")
 	private String patientName;
-	@NotEmpty(message = "Email is mandatory")
-	@Email
-	private String patientEmail;
 	private Double contact;
-	@NotEmpty(message = "Must contain a Password")
-	@Length(min=6, max=10)
-	private String password;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
+	private Login login;
+	
 	
 }
