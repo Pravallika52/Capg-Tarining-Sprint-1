@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,13 +12,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.TimeSlot;
 import com.example.demo.exception.SlotNotFoundException;
 import com.example.demo.service.ITimeSlotService;
-
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 public class TimeSlotController {
@@ -25,7 +26,7 @@ public class TimeSlotController {
 	ITimeSlotService timeService;
 	
 	@PostMapping("/slot/add")
-	ResponseEntity<TimeSlot> addSlot(TimeSlot slot) {
+	ResponseEntity<TimeSlot> addSlot(@Valid @RequestBody TimeSlot slot) {
 		TimeSlot newslot = timeService.addSlot(slot);
 		return new ResponseEntity<>(newslot, HttpStatus.CREATED);
 	}
@@ -49,8 +50,8 @@ public class TimeSlotController {
 }
 	@GetMapping("/slot/get/{slotId}")
 	ResponseEntity<TimeSlot> getSlotById(@PathVariable("slotId")int slotId)throws SlotNotFoundException  {
-		TimeSlot deleteSlot = timeService.deleteSlotById(slotId);
-		return new ResponseEntity<>(deleteSlot, HttpStatus.OK);
+		TimeSlot getSlot = timeService.getSlotById(slotId);
+		return new ResponseEntity<>(getSlot, HttpStatus.OK);
 	}
 	
 }

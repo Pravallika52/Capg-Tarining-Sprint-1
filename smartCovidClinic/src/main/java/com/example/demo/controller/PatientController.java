@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +34,7 @@ public class PatientController {
 	private static Logger logger = LogManager.getLogger();
 	
 	@PostMapping("/patient/add")
-	ResponseEntity<PatientOutputDto> newPatient(@RequestBody Patient pnt) throws PatientExistsException{
+	ResponseEntity<PatientOutputDto> newPatient(@Valid @RequestBody Patient pnt) throws PatientExistsException{
 		logger.info("Sending Add request to database");
 		Patient newPnt = pntService.addPatient(pnt);
 		PatientOutputDto pntDto = pntService.getPatientByIdDto(newPnt.getPatientId());
@@ -41,8 +43,8 @@ public class PatientController {
 	}
 	@DeleteMapping("/patient/delete/{pId}")
 	ResponseEntity<PatientOutputDto> deletePatientById(@PathVariable("pId") int pId) throws PatientNotFoundException {
-		Patient pnt = pntService.deletePatientById(pId);
-		PatientOutputDto pntDto = pntService.getPatientByIdDto(pnt.getPatientId());
+		PatientOutputDto pntDto = pntService.getPatientByIdDto(pId);
+		pntService.deletePatientById(pId);
 		return new ResponseEntity<>(pntDto, HttpStatus.OK);
 	}
 	@PutMapping("/patient/update/{pId}")

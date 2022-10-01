@@ -90,5 +90,17 @@ public class AilmentServiceImpl implements IAilmentService {
 		}
 		return ailmentDtoList;
 	}
+
+
+	@Override
+	public Ailment getAilmentById(int ailmentId) throws AilmentNotFoundException {
+		Optional<Ailment> ailOpt = ailRepo.findById(ailmentId);
+		if (ailOpt.isPresent()) {
+			Ailment ail = ailOpt.get();
+			return ail;
+		} else {
+			throw new AilmentNotFoundException("Patient not found with given id: " + ailmentId);
+		}
+	}
 		
 }

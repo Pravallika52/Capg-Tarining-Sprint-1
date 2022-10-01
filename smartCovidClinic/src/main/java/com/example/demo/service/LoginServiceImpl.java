@@ -10,6 +10,7 @@ import com.example.demo.dto.LoginResponseDto;
 import com.example.demo.entity.Login;
 import com.example.demo.exception.EmailNotFoundException;
 import com.example.demo.exception.InvalidCredentialsException;
+import com.example.demo.exception.PasswordNotSameException;
 import com.example.demo.repository.ILoginRepository;
 
 @Service
@@ -18,7 +19,7 @@ public class LoginServiceImpl implements ILoginService {
 	ILoginRepository loginRepo;
 	
 	@Override
-	public LoginResponseDto login(LoginDto loginDto) throws InvalidCredentialsException {
+	public LoginResponseDto login(LoginDto loginDto) throws InvalidCredentialsException, PasswordNotSameException {
 		Optional<Login> dbLoginOpt = loginRepo.findByLoginEmail(loginDto.getLoginEmail());
 		if (dbLoginOpt.isPresent()) {
 			// compare db password with user provided password
@@ -27,14 +28,14 @@ public class LoginServiceImpl implements ILoginService {
 			if (login.getLoginPassword().equals(loginDto.getLoginPassword())) {
 				// if credentials matches, set loggedIn flag as true and save
 				login.setLoggedIn(true);
-				Login updatedLogin = loginRepo.save(login);
+				loginRepo.save(login);
 				LoginResponseDto resDto = new LoginResponseDto();
 				resDto.setEmail(login.getLoginEmail());
 				resDto.setLoggedIn(login.isLoggedIn());
 				return resDto;
 			}
 			else {
-				throw new InvalidCredentialsException("Invalid credentials!");
+				throw new PasswordNotSameException("Invalid credentials!");
 			}
 		}
 			else {
@@ -52,9 +53,10 @@ public class LoginServiceImpl implements ILoginService {
 				Login login = dbLoginOpt.get();
 				// Update flag to false and save
 				login.setLoggedIn(false);
-				Login updatedLogin = loginRepo.save(login);
+				loginRepo.save(login);
 				// Convert Login obj to LoginRespDto
 				LoginResponseDto resDto = new LoginResponseDto();
+				resDto.setEmail(email);
 				resDto.setLoggedIn(false);
 				// return LoginRespDto obj
 				return resDto;

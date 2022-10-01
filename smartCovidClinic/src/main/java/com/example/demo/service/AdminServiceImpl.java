@@ -8,33 +8,39 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.AdminDto;
+import com.example.demo.dto.AdminInputDto;
 import com.example.demo.entity.Admin;
+import com.example.demo.entity.Login;
 import com.example.demo.exception.AdminExistsException;
 import com.example.demo.exception.AdminNotFoundException;
 import com.example.demo.exception.PasswordNotSameException;
 import com.example.demo.repository.IAdminRepository;
+import com.example.demo.repository.ILoginRepository;
 
 @Service
 public class AdminServiceImpl implements IAdminService{
 
-	
 	@Autowired
 	IAdminRepository adminRepo;
 	
+	@Autowired
+	ILoginRepository logRepo;
+	
 	@Override
-	public AdminDto addAdmin(Admin admin) throws AdminExistsException, PasswordNotSameException{
-		// TODO Auto-generated method stub
-//		Admin newAdmin=adminRepo.save(admin);
-//		return newAdmin;
-		Optional<Admin> adminOpt1 = adminRepo.findAdminByAdminName(admin.getAdminName());
-//		Optional<Admin> adminOpt2 = adminRepo.findAdminByAdminEmail(admin.getLogin().getLoginEmail());
-		if(adminOpt1.isPresent()) {
-			throw new AdminExistsException("Admin Already Exists with the given Name: "+admin.getAdminName());
+	public AdminDto addAdmin(AdminInputDto admin) throws AdminExistsException, PasswordNotSameException{
+		//Searching the database for an Administrator with the name
+		Optional<Login> loginOpt=logRepo.findByLoginEmail(admin.getLoginDto().getLoginEmail());
+		//If there is an Administrator with the given details isPresent method gives out true
+		if(loginOpt.isPresent()) {
+			throw new AdminExistsException("Admin Already Exists with the given Email: "+admin.getLoginDto().getLoginEmail());
 		}
-//		if(adminOpt2.isPresent()) {
-//			throw new AdminExistsException("Admin Already Exists with the given Email: "+admin.getLogin().getLoginEmail());
-//		}
-		Admin newAdmin=adminRepo.save(admin);
+		Admin newAdmin=new Admin();
+		newAdmin.setAdminName(admin.getAdminName());
+		Login newLogin=new Login();
+		newLogin.setLoginEmail(admin.getLoginDto().getLoginEmail());
+		newLogin.setLoginPassword(admin.getLoginDto().getLoginPassword());
+		newAdmin.setLogin(newLogin);
+//		Admin newAdmin=adminRepo.save(admin);
 		AdminDto adminDto=new AdminDto();
 		adminDto.setAdminId(newAdmin.getAdminId());
 		adminDto.setAdminName(newAdmin.getAdminName());
@@ -44,13 +50,19 @@ public class AdminServiceImpl implements IAdminService{
 	}
 
 	@Override
-	public Admin removeAdminById(int adminId) throws AdminNotFoundException{
-		// TODO Auto-generated method stub
+	public AdminDto removeAdminById(int adminId) throws AdminNotFoundException{
+		//Searching the database for an Administrator with the ID
 		Optional<Admin> adminOpt=adminRepo.findById(adminId);
+		//If there is an Administrator with the given details isPresent method gives out true
 		if(adminOpt.isPresent()) {
+			//Using get() method to convert from optional to Admin type
 			Admin deletedAdmin=adminOpt.get();
+			AdminDto adminDto=new AdminDto();
+			adminDto.setAdminId(deletedAdmin.getAdminId());
+			adminDto.setAdminName(deletedAdmin.getAdminName());
+			adminDto.setAdminEmail(deletedAdmin.getLogin().getLoginEmail());
 			adminRepo.deleteById(adminId);
-			return deletedAdmin;
+			return adminDto;
 		}
 		else {
 			throw new AdminNotFoundException("Administrator not Found with the given ID: "+adminId);
@@ -59,8 +71,9 @@ public class AdminServiceImpl implements IAdminService{
 
 	@Override
 	public Admin updateAdmin(int adminId, Admin admin) throws AdminNotFoundException {
-		// TODO Auto-generated method stub
+		//Searching the database for an Administrator with the ID
 		Optional<Admin> adminOpt=adminRepo.findById(adminId);
+		//If there is an Administrator with the given details isPresent method gives out true
 		if(adminOpt.isPresent()) {
 			Admin updateddAdmin=adminOpt.get();
 			adminRepo.save(admin);
@@ -73,16 +86,18 @@ public class AdminServiceImpl implements IAdminService{
 
 	@Override
 	public List<Admin> getAllAdmin() {
-		// TODO Auto-generated method stub
+		//Getting all the Administrator entries in the database using findAll() method
 		List<Admin> admins=adminRepo.findAll();
 		return admins;
 	}
 
 	@Override
 	public List<AdminDto> getAllAdminDto() {
-		// TODO Auto-generated method stub
+		//Getting all the Administrator entries in the database using findAll() method
 		List<Admin> admins=adminRepo.findAll();
+		//creating a AdminDto object of ArrayList type
 		List<AdminDto> adminDtoList=new ArrayList<>();
+		//Iterating through admins List
 		for(Admin admin:admins) {
 			AdminDto adminDto=new AdminDto();
 			adminDto.setAdminId(admin.getAdminId());
@@ -94,11 +109,15 @@ public class AdminServiceImpl implements IAdminService{
 	}
 
 	@Override
-	public Admin findAdminById(int adminId) throws AdminNotFoundException {
-		// TODO Auto-generated method stub
+	public AdminDto findAdminById(int adminId) throws AdminNotFoundException {
 		Optional<Admin> admin=adminRepo.findById(adminId);
 		if(admin.isPresent()) {
-			return admin.get();
+			Admin admin1=admin.get();
+			AdminDto adminDto=new AdminDto();
+			adminDto.setAdminId(admin1.getAdminId());
+			adminDto.setAdminName(admin1.getAdminName());
+			adminDto.setAdminEmail(admin1.getLogin().getLoginEmail());
+			return adminDto;
 		}
 		else {
 			throw new AdminNotFoundException("Administrator not Found with the given ID: "+adminId);
@@ -106,24 +125,17 @@ public class AdminServiceImpl implements IAdminService{
 		
 	}
 
-//	@Override
-//	public Admin findAdminByEmail(String adminEmail) throws AdminNotFoundException {
-//		// TODO Auto-generated method stub
-//		Optional<Admin> admin=adminRepo.findAdminByAdminEmail(adminEmail);
-//		if(admin.isPresent()) {
-//			return admin.get();
-//		}
-//		else {
-//			throw new AdminNotFoundException("Administrator not Found with the given Email: "+adminEmail);
-//		}
-//	}
 
 	@Override
-	public Admin findAdminByName(String adminName) throws AdminNotFoundException {
-		// TODO Auto-generated method stub
+	public AdminDto findAdminByName(String adminName) throws AdminNotFoundException {
 		Optional<Admin> admin=adminRepo.findAdminByAdminName(adminName);
 		if(admin.isPresent()) {
-			return admin.get();
+			Admin admin1=admin.get();
+			AdminDto adminDto=new AdminDto();
+			adminDto.setAdminId(admin1.getAdminId());
+			adminDto.setAdminName(admin1.getAdminName());
+			adminDto.setAdminEmail(admin1.getLogin().getLoginEmail());
+			return adminDto;
 		}
 		else {
 			throw new AdminNotFoundException("Administrator not Found with the given Name: "+adminName);

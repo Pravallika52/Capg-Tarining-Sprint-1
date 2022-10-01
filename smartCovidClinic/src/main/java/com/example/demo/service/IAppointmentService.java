@@ -9,7 +9,7 @@ public interface IAppointmentService {
 	
 	Appointment addAppoint(Appointment appoint);
 	List<Appointment> getAllAppoint();
-	Appointment viewAppoint(int appointId);
+	Appointment viewAppoint(int appointId) throws AppointmentNotFoundException;
 	Appointment updateAppointment(int appointId, Appointment appoint) throws AppointmentNotFoundException;
 
 }

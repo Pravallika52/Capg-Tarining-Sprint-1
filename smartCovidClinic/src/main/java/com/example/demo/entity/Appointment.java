@@ -4,9 +4,12 @@ import java.time.LocalDate;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -31,7 +34,15 @@ public class Appointment {
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate appointmentDate;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "id")
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="time_slot_id")
 	private TimeSlot timeSlot;
+	
+	@Enumerated(EnumType.STRING)
+	private TimeSlot1 timeSlot1;
+	
+	@ManyToOne(cascade= {CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.MERGE})
+	@JoinColumn(name="appointment_doctor_id")
+	private Doctor doctor;
+	
 }

@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +28,7 @@ public class AilmentController {
 	IAilmentService ailService;
 	
 	@PostMapping("/ailment/add")
-	ResponseEntity<Ailment> newAilment(@RequestBody Ailment ailment)  throws AilmentExistsException {
+	ResponseEntity<Ailment> newAilment(@Valid @RequestBody Ailment ailment)  throws AilmentExistsException {
 	Ailment newAil = ailService.addAilment(ailment);
 	return new ResponseEntity<>(newAil, HttpStatus.CREATED);
 	}
@@ -53,4 +55,11 @@ public class AilmentController {
 		List<AilmentOutputDto> ailments= ailService.getAllAilmentsDto();
 	return new ResponseEntity<>(ailments, HttpStatus.OK);
 	}
+	
+	@GetMapping("/ailment/get/{ailmentId}")
+	ResponseEntity<Ailment> getAilmentById(@PathVariable("ailmentId") int ailmentId) throws AilmentNotFoundException {
+		Ailment ail = ailService.getAilmentById(ailmentId);
+		return new ResponseEntity<>(ail, HttpStatus.OK);
+	}
+	
 }

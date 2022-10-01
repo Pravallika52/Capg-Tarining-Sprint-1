@@ -11,11 +11,7 @@ import com.example.demo.entity.Admin;
 @Repository
 public interface IAdminRepository extends JpaRepository<Admin, Integer> {
 	
-//	@Query(value="SELECT * from admin a WHERE a.admin_email= :adminEmail",nativeQuery=true)
-//	Optional<Admin> findAdminByEmail(@Param("adminEmail") String adminEmail);
-//	
-//	Optional<Admin> findAdminByAdminEmail(String adminEmail);
-	
+	//Method to find the Administrator details using name
 	Optional<Admin> findAdminByAdminName(String adminName);
 
 }

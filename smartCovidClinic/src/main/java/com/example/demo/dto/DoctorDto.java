@@ -7,5 +7,6 @@ import lombok.Data;
 public class DoctorDto {
 	
 	private String docName;
+	private boolean doctorAvailable;
 
 }

@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.SpecOutputDto;
 import com.example.demo.entity.Specialization;
+import com.example.demo.exception.SpecExistsException;
 import com.example.demo.exception.SpecNotFoundException;
 import com.example.demo.service.ISpecializationService;
 
@@ -29,7 +32,7 @@ public class SpecializationController {
 	private static Logger logger = LogManager.getLogger();
 
 	@PostMapping("/spec/add")
-	ResponseEntity<Specialization> addSpec(Specialization spec) {
+	ResponseEntity<Specialization> addSpec(@Valid @RequestBody Specialization spec) throws SpecExistsException {
 		Specialization newspec = specService.addSpec(spec);
 		return new ResponseEntity<>(newspec, HttpStatus.CREATED);
 	}

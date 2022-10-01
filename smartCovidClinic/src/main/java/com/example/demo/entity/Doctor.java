@@ -1,8 +1,16 @@
 package com.example.demo.entity;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,6 +26,15 @@ public class Doctor {
 	@GeneratedValue
 	private int doctorId;
 	private String doctorName;
-	private String Specilization;
+	
+	@ManyToMany(cascade= {CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.MERGE})
+	@JoinTable(name="doctor_specialization", joinColumns= {@JoinColumn(name="doctor_id")}, inverseJoinColumns= {@JoinColumn(name="specialization_id")})
+	private List<Specialization> specialization;
+	
+	@Enumerated(EnumType.STRING)
+	private Specialization1 spec;
+	
+	private boolean doctorAvailable;
+
 
 }

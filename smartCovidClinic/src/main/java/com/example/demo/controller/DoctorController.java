@@ -41,4 +41,6 @@ public class DoctorController {
 		logger.info("Successfully get a doctor of given name from database.");
 		return new ResponseEntity<>(doctor,HttpStatus.OK);
 	}
+	
+	
 }

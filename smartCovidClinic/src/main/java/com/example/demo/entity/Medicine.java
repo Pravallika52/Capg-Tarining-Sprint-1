@@ -5,9 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.validation.constraints.NotEmpty;
-
+import javax.persistence.ManyToOne;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,16 +16,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Admin {
+public class Medicine {
 	
 	@Id
 	@GeneratedValue
-	private int adminId;
-	@NotEmpty(message="Please Enter a Name")
-	private String adminName;
-	private String contact;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "admin_login_id")
-	private Login login;
+	private int id;
+	
+	@ManyToOne(cascade= {CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.MERGE})
+	@JoinColumn(name="medicin_ailment_id")
+	private Ailment Ailment;
+	
+	private String Medicine;
 
 }

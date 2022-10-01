@@ -29,10 +29,15 @@ public class AppointmentServiceImpl implements IAppointmentService{
 	}
 
 	@Override
-	public Appointment viewAppoint(int appointId) {
+	public Appointment viewAppoint(int appointId) throws AppointmentNotFoundException{
 		Optional<Appointment> appointOpt = appointRepo.findById(appointId);
-		Appointment appoint = appointOpt.get();
-		return appoint;
+		if(appointOpt.isPresent()) {
+			Appointment appoint = appointOpt.get();
+			return appoint;
+		}else {
+			throw new AppointmentNotFoundException("Appointment not found with given id: " + appointId);
+		}
+		
 
 	}
 

@@ -10,12 +10,12 @@ import com.example.demo.exception.AilmentNotFoundException;
 
 
 public interface IAilmentService {
+	
 	Ailment addAilment(Ailment ailment) throws AilmentExistsException;
 	Ailment deleteAilmentById(int ailmentId) throws AilmentNotFoundException;
 	Ailment updateAilment(int ailmentId, Ailment ailment) throws AilmentNotFoundException;
 	List<Ailment> getAllAilments();
 	List<AilmentOutputDto> getAllAilmentsDto();
-	
-	
+	Ailment getAilmentById(int pId) throws AilmentNotFoundException;
 	
 }
