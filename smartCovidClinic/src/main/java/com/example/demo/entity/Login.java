@@ -26,6 +26,7 @@ public class Login {
 	@NotEmpty(message="Please Enter a Password")
 	@Length(min=6,max=20)
 	private String loginPassword;
+	private String role = "employee";
 	private boolean isLoggedIn = false;
 	
 

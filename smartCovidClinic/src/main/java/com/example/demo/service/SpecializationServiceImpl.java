@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.SpecOutputDto;
 import com.example.demo.entity.Specialization;
+import com.example.demo.exception.SpecExistsException;
 import com.example.demo.exception.SpecNotFoundException;
 import com.example.demo.repository.ISpecializationRepository;
 
@@ -19,9 +20,15 @@ public class SpecializationServiceImpl implements ISpecializationService {
 	ISpecializationRepository specRepo;
 
 	@Override
-	public Specialization addSpec(Specialization spec) {
-		Specialization newspec = specRepo.save(spec);
-		return newspec;
+	public Specialization addSpec(Specialization spec)throws SpecExistsException {
+		Optional<Specialization> specOpt = specRepo.findSpecBySpecName(spec.getSpecName());
+		if(specOpt.isPresent()) {
+			throw new SpecExistsException("Specialization already exists with the given Name: "+spec.getSpecName());
+		}else {
+			Specialization newspec = specRepo.save(spec);
+			return newspec;
+		}
+		
 	}
 
 	@Override

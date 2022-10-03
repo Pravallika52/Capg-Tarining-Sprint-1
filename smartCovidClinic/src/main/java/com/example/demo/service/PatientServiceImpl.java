@@ -9,31 +9,50 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.PatientInputDto;
 import com.example.demo.dto.PatientOutputDto;
+import com.example.demo.entity.Login;
 import com.example.demo.entity.Patient;
 import com.example.demo.exception.PatientExistsException;
 import com.example.demo.exception.PatientNotFoundException;
+import com.example.demo.repository.ILoginRepository;
 import com.example.demo.repository.IPatientRepository;
 
 @Service
-public class PatientServiceImpl implements IPatientService {
+public class PatientServiceImpl implements IPatientService{
 	
 	@Autowired
 	IPatientRepository pntRepo;
 	
+	@Autowired
+	ILoginRepository logRepo;
+	
 	private Logger logger = LogManager.getLogger();
 	
 	@Override
-	public Patient addPatient(Patient pnt)throws PatientExistsException {
+	public PatientOutputDto addPatient(PatientInputDto pnt)throws PatientExistsException {
 		logger.info("Sending add Request to Repository ");	
-		Optional<Patient> pnt1 = pntRepo.findByPatientName(pnt.getPatientName());
-		if(pnt1.isPresent()) {
+		Optional<Login> loginOpt=logRepo.findByLoginEmail(pnt.getLogin().getLoginEmail());
+		
+		if(loginOpt.isPresent()) {
 			throw new PatientExistsException("Patient already Exists" + pnt.getPatientName());
 		}
 		else {
-		Patient newPnt = pntRepo.save(pnt);
+		Patient newPnt = new Patient();
+		newPnt.setPatientName(pnt.getPatientName());
+		newPnt.setContact(pnt.getContact());
+		newPnt.setAilment1(pnt.getAilment1());
+		newPnt.setAilment2(pnt.getAilment2());
+		newPnt.setAilment3(pnt.getAilment3());
+		Login newLogin=new Login();
+		newLogin.setLoginEmail(pnt.getLogin().getLoginEmail());
+		newLogin.setLoginPassword(pnt.getLogin().getLoginPassword());
+		newPnt.setLogin(newLogin);
+		pntRepo.save(newPnt);
+		PatientOutputDto pntDto= new PatientOutputDto();
+		pntDto.setPatientName(newPnt.getPatientName());
 		logger.info("Added Patient successfully");
-		return newPnt;
+		return pntDto;
 		}
 	}
 
@@ -63,7 +82,6 @@ public class PatientServiceImpl implements IPatientService {
 		} else {
 			throw new PatientNotFoundException("Patient not found with given id: " + pId);
 		}
-
 	}
 
 	@Override
@@ -107,6 +125,26 @@ public class PatientServiceImpl implements IPatientService {
 		logger.info("Viewed successfully");
 		return pntDto;
 	}
+
+//	@Override
+//	public PatientAppointmentDto updateAppointment(int pId, PatientAppointmentDto pnt) {
+//		Optional<Patient> pntOpt = pntRepo.findById(pId);
+//		Patient newPnt = new Patient();
+//		newPnt.setPatientName(pntOpt.get().getPatientName());
+//		newPnt.setContact(pntOpt.get().getContact());
+//		newPnt.setAilment1(pntOpt.get().getAilment1());
+//		newPnt.setAilment2(pntOpt.get().getAilment2());
+//		newPnt.setAilment3(pntOpt.get().getAilment3());
+//		Login newLogin=new Login();
+//		newLogin.setLoginEmail(pntOpt.get().getLogin().getLoginEmail());
+//		newLogin.setLoginPassword(pntOpt.get().getLogin().getLoginPassword());
+//		newPnt.setLogin(newLogin);
+//		newPnt.setAppointmentDate(pnt.getAppointmentDate());
+//		newPnt.setTimeSlot1(pnt.getTimeSlot1());
+//		
+//		pntRepo.save(newPnt);
+//		return null;
+//	}
 
 
 	

@@ -34,19 +34,22 @@ public class AdminServiceImpl implements IAdminService{
 		if(loginOpt.isPresent()) {
 			throw new AdminExistsException("Admin Already Exists with the given Email: "+admin.getLoginDto().getLoginEmail());
 		}
+		else {
 		Admin newAdmin=new Admin();
 		newAdmin.setAdminName(admin.getAdminName());
+		newAdmin.setContact(admin.getContact());
 		Login newLogin=new Login();
 		newLogin.setLoginEmail(admin.getLoginDto().getLoginEmail());
 		newLogin.setLoginPassword(admin.getLoginDto().getLoginPassword());
 		newAdmin.setLogin(newLogin);
-//		Admin newAdmin=adminRepo.save(admin);
+		adminRepo.save(newAdmin);
 		AdminDto adminDto=new AdminDto();
 		adminDto.setAdminId(newAdmin.getAdminId());
 		adminDto.setAdminName(newAdmin.getAdminName());
 		adminDto.setAdminEmail(newAdmin.getLogin().getLoginEmail());
 		
 		return adminDto;
+		}
 	}
 
 	@Override

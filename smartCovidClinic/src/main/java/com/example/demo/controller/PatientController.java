@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Patient;
+import com.example.demo.dto.PatientInputDto;
 import com.example.demo.dto.PatientOutputDto;
 import com.example.demo.exception.PatientExistsException;
 import com.example.demo.exception.PatientNotFoundException;
@@ -34,12 +35,11 @@ public class PatientController {
 	private static Logger logger = LogManager.getLogger();
 	
 	@PostMapping("/patient/add")
-	ResponseEntity<PatientOutputDto> newPatient(@Valid @RequestBody Patient pnt) throws PatientExistsException{
+	ResponseEntity<PatientOutputDto> newPatient(@Valid @RequestBody PatientInputDto pnt) throws PatientExistsException{
 		logger.info("Sending Add request to database");
-		Patient newPnt = pntService.addPatient(pnt);
-		PatientOutputDto pntDto = pntService.getPatientByIdDto(newPnt.getPatientId());
+		PatientOutputDto newPnt = pntService.addPatient(pnt);
 		logger.info("Added patient successfully");
-		return new ResponseEntity<>(pntDto, HttpStatus.CREATED);
+		return new ResponseEntity<>(newPnt, HttpStatus.CREATED);
 	}
 	@DeleteMapping("/patient/delete/{pId}")
 	ResponseEntity<PatientOutputDto> deletePatientById(@PathVariable("pId") int pId) throws PatientNotFoundException {

@@ -26,6 +26,7 @@ public class LoginServiceImpl implements ILoginService {
 			// if password matching return credentials else throw exception
 			Login login = dbLoginOpt.get();
 			if (login.getLoginPassword().equals(loginDto.getLoginPassword())) {
+				if(login.getRole().equals(loginDto.getRole())) {
 				// if credentials matches, set loggedIn flag as true and save
 				login.setLoggedIn(true);
 				loginRepo.save(login);
@@ -33,6 +34,11 @@ public class LoginServiceImpl implements ILoginService {
 				resDto.setEmail(login.getLoginEmail());
 				resDto.setLoggedIn(login.isLoggedIn());
 				return resDto;
+				}
+				else
+				{
+					throw new InvalidCredentialsException("The given mail does not belong to the Role given ");
+				}
 			}
 			else {
 				throw new PasswordNotSameException("Invalid credentials!");
