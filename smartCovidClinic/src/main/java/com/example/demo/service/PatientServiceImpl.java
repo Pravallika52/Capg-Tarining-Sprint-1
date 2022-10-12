@@ -9,8 +9,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.DoctorDto;
+import com.example.demo.dto.PatientAppointmentDto;
 import com.example.demo.dto.PatientInputDto;
 import com.example.demo.dto.PatientOutputDto;
+import com.example.demo.entity.Doctor;
 import com.example.demo.entity.Login;
 import com.example.demo.entity.Patient;
 import com.example.demo.exception.PatientExistsException;
@@ -41,12 +44,12 @@ public class PatientServiceImpl implements IPatientService{
 		Patient newPnt = new Patient();
 		newPnt.setPatientName(pnt.getPatientName());
 		newPnt.setContact(pnt.getContact());
-		newPnt.setAilment1(pnt.getAilment1());
-		newPnt.setAilment2(pnt.getAilment2());
-		newPnt.setAilment3(pnt.getAilment3());
+		newPnt.setMemberShip(pnt.getMemberShip());
 		Login newLogin=new Login();
 		newLogin.setLoginEmail(pnt.getLogin().getLoginEmail());
 		newLogin.setLoginPassword(pnt.getLogin().getLoginPassword());
+		newLogin.setRole("Patient");
+
 		newPnt.setLogin(newLogin);
 		pntRepo.save(newPnt);
 		PatientOutputDto pntDto= new PatientOutputDto();
@@ -98,19 +101,21 @@ public class PatientServiceImpl implements IPatientService{
 	}
 
 	@Override
-	public List<PatientOutputDto> getAllPatients() {
+	public List<Patient> getAllPatients() {
 		logger.info("View All Patients Request Sent to Repository");
 		List<Patient> pnt = pntRepo.findAll();
 		List<PatientOutputDto> pntDtoList= new ArrayList<>();
 		for(Patient p:pnt) {
 			PatientOutputDto pntDto = new PatientOutputDto();
 			  pntDto.setPatientName(p.getPatientName());
-			  
+			  pntDto.setContact(p.getContact());
+			  pntDto.setLoginEmail(p.getLogin().getLoginEmail());
+			  pntDto.setMembership(p.getMemberShip());
 			  // add dto obj into the dto List.
 			  pntDtoList.add(pntDto);
 		}
 		logger.info("Viewed successfully");
-		return pntDtoList;
+		return pnt;
 		
 		
 	}
@@ -126,25 +131,38 @@ public class PatientServiceImpl implements IPatientService{
 		return pntDto;
 	}
 
-//	@Override
-//	public PatientAppointmentDto updateAppointment(int pId, PatientAppointmentDto pnt) {
-//		Optional<Patient> pntOpt = pntRepo.findById(pId);
-//		Patient newPnt = new Patient();
-//		newPnt.setPatientName(pntOpt.get().getPatientName());
-//		newPnt.setContact(pntOpt.get().getContact());
-//		newPnt.setAilment1(pntOpt.get().getAilment1());
-//		newPnt.setAilment2(pntOpt.get().getAilment2());
-//		newPnt.setAilment3(pntOpt.get().getAilment3());
-//		Login newLogin=new Login();
-//		newLogin.setLoginEmail(pntOpt.get().getLogin().getLoginEmail());
-//		newLogin.setLoginPassword(pntOpt.get().getLogin().getLoginPassword());
-//		newPnt.setLogin(newLogin);
-//		newPnt.setAppointmentDate(pnt.getAppointmentDate());
-//		newPnt.setTimeSlot1(pnt.getTimeSlot1());
-//		
-//		pntRepo.save(newPnt);
-//		return null;
-//	}
+
+	@Override
+	public Patient addPatientAppointment(int pId, PatientAppointmentDto pnt) {
+		Optional<Patient> pntOpt = pntRepo.findById(pId);
+		Patient newPnt = new Patient();
+		newPnt.setPatientId(pId);
+		newPnt.setPatientName(pntOpt.get().getPatientName());
+		newPnt.setContact(pntOpt.get().getContact());
+		Login newLogin=new Login();
+		newLogin.setId(pntOpt.get().getLogin().getId());
+		newLogin.setLoginEmail(pntOpt.get().getLogin().getLoginEmail());
+		newLogin.setLoginPassword(pntOpt.get().getLogin().getLoginPassword());
+		newLogin.setLoggedIn(pntOpt.get().getLogin().isLoggedIn());
+		newPnt.setLogin(newLogin);
+		newPnt.setMemberShip(pntOpt.get().getMemberShip());
+		newPnt.setAilment1(pnt.getAilment1());
+		newPnt.setAilment2(pnt.getAilment2());
+		newPnt.setAilment3(pnt.getAilment3());
+		newPnt.setAppointmentDate(pnt.getAppointmentDate());
+		newPnt.setTimeSlot1(pnt.getTimeSlot1());
+		newPnt.setDoctor(pnt.getDoctorName());
+		
+		pntRepo.save(newPnt);
+		return newPnt;
+	}
+
+	@Override
+	public Patient findByLoginEmail(String email) {
+		// TODO Auto-generated method stub
+		Patient pnt=pntRepo.findByEmail(email);
+		return pnt;
+	}
 
 
 	

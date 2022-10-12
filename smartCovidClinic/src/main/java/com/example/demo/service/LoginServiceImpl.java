@@ -33,6 +33,7 @@ public class LoginServiceImpl implements ILoginService {
 				LoginResponseDto resDto = new LoginResponseDto();
 				resDto.setEmail(login.getLoginEmail());
 				resDto.setLoggedIn(login.isLoggedIn());
+				resDto.setRole(login.getRole());
 				return resDto;
 				}
 				else
@@ -70,6 +71,33 @@ public class LoginServiceImpl implements ILoginService {
 			else {
 				throw new EmailNotFoundException("User not found with email: "+email);
 			}
+		}
+
+		@Override
+		public Login getById(int id) {
+			// TODO Auto-generated method stub
+			Optional<Login> log=loginRepo.findById(id);
+			return log.get();
+		}
+
+		@Override
+		public Login updateLogin(String email, Login login) {
+			// TODO Auto-generated method stub
+			Optional<Login> log=loginRepo.findByLoginEmail(email);
+			Login newLogin=new Login();
+			newLogin.setId(log.get().getId());
+			newLogin.setLoginEmail(log.get().getLoginEmail());
+			newLogin.setLoginPassword(login.getLoginPassword());
+			newLogin.setRole(log.get().getRole());
+			loginRepo.save(newLogin);
+			return newLogin;
+		}
+		
+		@Override
+		public Login findByLoginEmail(String email) {
+			Optional<Login> log=loginRepo.findByLoginEmail(email);
+			
+			return log.get();
 		}
 
 	}

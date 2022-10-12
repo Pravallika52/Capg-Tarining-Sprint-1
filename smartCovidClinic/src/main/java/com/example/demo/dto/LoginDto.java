@@ -9,5 +9,6 @@ public class LoginDto{
 	private String loginEmail;
 	private String loginPassword;
 	private String role;
+	private Boolean isLoggedIn;
 
 }

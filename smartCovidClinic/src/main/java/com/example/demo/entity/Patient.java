@@ -16,6 +16,7 @@ import javax.validation.constraints.NotEmpty;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.example.demo.dto.DoctorDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
@@ -59,9 +60,12 @@ public class Patient {
 	@Enumerated(EnumType.STRING)
 	private TimeSlot1 timeSlot1;
 	
-	@ManyToOne(cascade= {CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.MERGE})
-	@JoinColumn(name="appointment_doctor_id")
-	private Doctor doctor;
+	private String doctor;
+	
+	public Boolean getMemberShip() {
+		return memberShip;
+	}
+
 	
 	
 	

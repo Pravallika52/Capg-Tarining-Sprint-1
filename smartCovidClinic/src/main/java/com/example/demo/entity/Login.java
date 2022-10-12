@@ -13,9 +13,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 public class Login {
 	
 	@Id
@@ -26,7 +26,7 @@ public class Login {
 	@NotEmpty(message="Please Enter a Password")
 	@Length(min=6,max=20)
 	private String loginPassword;
-	private String role = "employee";
+	private String role ;
 	private boolean isLoggedIn = false;
 	
 

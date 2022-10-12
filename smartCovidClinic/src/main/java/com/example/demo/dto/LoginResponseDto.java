@@ -7,6 +7,7 @@ public class LoginResponseDto {
 	
 	private String email;
 	private boolean isLoggedIn;
+	private String role;
 	
 
 }

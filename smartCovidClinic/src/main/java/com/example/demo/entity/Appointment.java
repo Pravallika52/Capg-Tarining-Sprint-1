@@ -36,8 +36,8 @@ public class Appointment {
 	@Enumerated(EnumType.STRING)
 	private TimeSlot1 timeSlot1;
 	
-	@ManyToOne(cascade= {CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.MERGE})
-	@JoinColumn(name="appointment_doctor_id")
-	private Doctor doctor;
+//	@ManyToOne(cascade= {CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.MERGE})
+//	@JoinColumn(name="appointment_doctor_id")
+//	private Doctor doctor;
 	
 }

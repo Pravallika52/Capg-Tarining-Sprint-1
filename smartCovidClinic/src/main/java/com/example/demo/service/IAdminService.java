@@ -19,5 +19,6 @@ public interface IAdminService {
 	List<AdminDto> getAllAdminDto();
 	AdminDto findAdminById(int adminId) throws AdminNotFoundException;
 	AdminDto findAdminByName(String adminName) throws AdminNotFoundException;
-
+	Admin findfullAdminById(int adminId) throws AdminNotFoundException;
+	Admin findByLoginEmail(String email);
 }

@@ -6,4 +6,7 @@ import lombok.Data;
 public class PatientOutputDto {
 
 	private String patientName;
+	private Double contact;
+	private String loginEmail;
+	private Boolean membership;
 }

@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ import com.example.demo.dto.PatientOutputDto;
 import com.example.demo.entity.Admin;
 import com.example.demo.entity.Appointment;
 import com.example.demo.entity.Doctor;
+import com.example.demo.entity.Patient;
 import com.example.demo.exception.AdminExistsException;
 import com.example.demo.exception.AdminNotFoundException;
 import com.example.demo.exception.AppointmentNotFoundException;
@@ -34,6 +36,7 @@ import com.example.demo.service.IDoctorService;
 import com.example.demo.service.IPatientService;
 
 @RestController
+@CrossOrigin(origins="http://localhost:3000/")
 public class AdminController {
 	
 	@Autowired
@@ -74,7 +77,7 @@ public class AdminController {
 	
 	//Updating an existing Administrator in the Database
 	@PutMapping("/admin/update/{adminId}")
-	ResponseEntity<Admin> updateAdmin(@PathVariable("adminId") int adminId, Admin admin) throws AdminNotFoundException{
+	ResponseEntity<Admin> updateAdmin(@PathVariable("adminId") int adminId,@RequestBody Admin admin) throws AdminNotFoundException{
 		//Sending Information to console using Logger
 		logger.info("Sending request to Update a Administrator");
 		Admin updatedAdmin=adminServ.updateAdmin(adminId, admin);
@@ -106,6 +109,15 @@ public class AdminController {
 		//Sending Information to console using Logger
 		logger.info("Sending request to get Administrator by ID");
 		AdminDto admin=adminServ.findAdminById(adminId);
+		logger.info("Presented the Administrator with the given ID");
+		return new ResponseEntity<>(admin,HttpStatus.OK);
+	}
+	
+	@GetMapping("/admin/findfullById/{adminId}")
+	ResponseEntity<Admin> getfullAdminById(@PathVariable("adminId") int adminId) throws AdminNotFoundException{
+		//Sending Information to console using Logger
+		logger.info("Sending request to get Administrator by ID");
+		Admin admin=adminServ.findfullAdminById(adminId);
 		logger.info("Presented the Administrator with the given ID");
 		return new ResponseEntity<>(admin,HttpStatus.OK);
 	}
@@ -153,9 +165,9 @@ public class AdminController {
 	}
 	
 	@GetMapping("/admin/getAllPatients")
-	ResponseEntity<List<PatientOutputDto>> getAllPatients() {
+	ResponseEntity<List<Patient>> getAllPatients() {
 		logger.info("Sending request to get List of all Patients");
-		List<PatientOutputDto> patients= patientServ.getAllPatients();
+		List<Patient> patients= patientServ.getAllPatients();
 		logger.info("All the Patients in the Database are presented");
 		return new ResponseEntity<>(patients, HttpStatus.OK);
 	}
@@ -166,6 +178,15 @@ public class AdminController {
 		Appointment appoint1= appointServ.updateAppointment(appointId, appoint);
 		logger.info("Updated the Doctor in the Database");
 		return new ResponseEntity<>(appoint1, HttpStatus.OK);
+	}
+	
+	@GetMapping("/admin/getByEmail/{email}")
+	ResponseEntity<Admin> getByEmail(@PathVariable("email") String email){
+		//Sending Information to console using Logger
+		logger.info("Sending request to get Administrator by Email");
+		Admin admin=adminServ.findByLoginEmail(email);
+		logger.info("Presented the Administrator with the given Email");
+		return new ResponseEntity<>(admin,HttpStatus.OK);
 	}
 	
 
